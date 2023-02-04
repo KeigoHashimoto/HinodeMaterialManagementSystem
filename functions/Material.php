@@ -293,7 +293,7 @@ class Material
     {
         session_start();
 
-
+        $previous = array();
 
         /**
          * csrf対策
@@ -329,7 +329,6 @@ class Material
                             foreach ($data as $id => $replenish) {
                                 $pdo = $this->dbConnect();
 
-
                                 //stock取得
                                 $sql = "SELECT stock FROM materials WHERE id = :id;";
                                 $stmt = $pdo->prepare($sql);
@@ -348,8 +347,7 @@ class Material
                                 $pdo = null;
 
 
-
-                                $_SESSION['previous'] = [$id => $stock['stock']];
+                                $previous += [$id => $stock['stock']];
 
                                 print_r($_SESSION['previous']);
                             }
@@ -358,6 +356,7 @@ class Material
                 }
             }
         }
+        $_SESSION['previous'] = $previous;
         header('Location:../views/replenish.php');
         exit;
     }

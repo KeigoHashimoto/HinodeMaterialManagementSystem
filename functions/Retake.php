@@ -29,23 +29,26 @@ class Retake
 
                 if ($token != "" && $token == $session_token) {
 
-                    for ($i = 0; $i < count($_POST['previous_id']); $i++) {
+                    if (array_key_exists('submit', $_POST)) {
 
-                        $id = $_POST['previous_id'][$i];
-                        $stock = $_POST['previous_stock'][$i];
+                        for ($i = 0; $i < count($_POST['previous_id']); $i++) {
 
-                        $data = [$id => $stock];
+                            $id = $_POST['previous_id'][$i];
+                            $stock = $_POST['previous_stock'][$i];
 
-                        foreach ($data as $id => $stock) {
-                            $pdo = $this->dbConnect();
-                            $sql = "UPDATE materials SET stock = :stock WHERE id = :id;";
-                            $stmt = $pdo->prepare($sql);
-                            $stmt->bindParam(':stock', $stock, PDO::PARAM_INT);
-                            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-                            $stmt->execute();
+                            $data = [$id => $stock];
 
-                            $pdo = null;
-                            $stmt = null;
+                            foreach ($data as $id => $stock) {
+                                $pdo = $this->dbConnect();
+                                $sql = "UPDATE materials SET stock = :stock WHERE id = :id;";
+                                $stmt = $pdo->prepare($sql);
+                                $stmt->bindParam(':stock', $stock, PDO::PARAM_INT);
+                                $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+                                $stmt->execute();
+
+                                $pdo = null;
+                                $stmt = null;
+                            }
                         }
                     }
                 }
@@ -54,13 +57,13 @@ class Retake
             }
         }
 
-        // if (array_key_exists('type', $_POST)) {
-        //     if ($_POST['type'][0] == "use") {
-        //         header('Location:../views/use.php');
-        //     } elseif ($_POST['type'][0] == "replenish") {
-        //         header('Location:../views/replenish.php');
-        //     }
-        // }
+        if (array_key_exists('type', $_POST)) {
+            if ($_POST['type'][0] == "use") {
+                header('Location:../views/use.php');
+            } elseif ($_POST['type'][0] == "replenish") {
+                header('Location:../views/replenish.php');
+            }
+        }
         exit;
     }
 }

@@ -45,9 +45,10 @@ $type = "use";
                 <input type="hidden" name="token" value=<?php echo $token ?>>
 
                 <?php foreach ($index as $record) { ?>
-                    <div class="wrap">
-                        <?php
-                        if ($record['stock'] > 0) { ?>
+
+                    <?php
+                    if ($record['stock'] > 0) { ?>
+                        <div class="wrap">
                             <input type="hidden" name="id[]" value=<?php echo $record['id'] ?>>
                             <input type="hidden" name="stock[]" value=<?php echo $record['stock'] ?>>
                             <input type="hidden" name="material_name[]" value=<?php echo $record['material_name'] ?>>
@@ -60,8 +61,9 @@ $type = "use";
                             <small>最終持ち出し日時 :
                                 <?php echo date('Y/m/d', strtotime($record['updated_at'])) ?>
                             </small>
-                        <?php } ?>
-                    </div>
+                        </div>
+                    <?php } ?>
+
                 <?php } ?>
                 <button type="submit" value="submit" class="submit-btn">USE</button>
             </form>
