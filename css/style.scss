@@ -116,8 +116,8 @@ table,tr,th,td{
 }
 
 table{
-    width: 100%;
-    margin-top: 3rem;
+    width: 95%;
+    margin:3rem auto;
     font-size:2vw;
     
     td{
@@ -191,6 +191,7 @@ ______________________________*/
     form{
         margin: 2rem auto;
         display: flex;
+        flex-direction:column;
         justify-content: space-between;
         align-items: center;
         background: #ccc;
@@ -201,12 +202,22 @@ ______________________________*/
             display: flex;
             align-items: center;
             column-gap:2rem;
+            height:2.5rem;
 
             input{
                 width: 5rem;
             }
         }
+
+        .wrap{
+            border-bottom:1px dotted #333;
+            margin-bottom: 3rem;
+            width: 100%;
+            line-height:1.2;
+            
+        }
     }
+
 }
 
 .back-btn{
@@ -228,6 +239,7 @@ ______________________________*/
         }
     
 }
+
 /*______________________________
 
 ______________________________*/

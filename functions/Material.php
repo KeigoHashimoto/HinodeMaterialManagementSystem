@@ -219,10 +219,6 @@ class Material
              * postがあるか
              */
             if (array_key_exists('use', $_POST)) {
-                $used = $_POST['use'];
-                $id = $_POST['id'];
-                $stock = $_POST['stock'];
-
                 /**
                  * 二重送信禁止
                  */
@@ -230,33 +226,61 @@ class Material
                 $session_token = isset($_SESSION['token']) ? $_SESSION['token'] : "";
                 unset($_SESSION['token']);
 
-
+                /**
+                 * 二重送信対策ようトークンの判定
+                 */
                 if ($token  != "" && $token == $session_token) {
-                    /**
-                     * validation
-                     */
-                    if (!empty($used) && !empty($id)) {
-                        /**
-                         * 在庫が足りているかどうか
-                         */
-                        if ($stock - $used >= 0) {
-                            $pdo = $this->dbConnect();
-                            $sql = "UPDATE materials SET stock = :stock - :used WHERE id = :id;";
-                            $stmt = $pdo->prepare($sql);
-                            $stmt->bindParam(':used', $used, PDO::PARAM_INT);
-                            $stmt->bindParam(':stock', $stock, PDO::PARAM_INT);
-                            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-                            $stmt->execute();
-                            $stmt = null;
-                            $pdo = null;
 
-                            $_SESSION['previous_stock'] = $stock;
-                            $_SESSION['previous_id'] = $id;
+                    //postで送られてきたidとuseを取得して配列を作る
+                    for ($i = 0; $i < count($_POST['id']); $i++) {
+
+                        $key = isset($_POST['id'][$i]) ? $_POST['id'][$i] : "";
+                        $value = isset($_POST['use'][$i]) ? $_POST['use'][$i] : "";
+
+                        $data[] = [$key => $value];
+
+
+                        if ($value == "") {
+                            $_SESSION['err'] = "使用数が入力されていない項目があります。";
+                        } elseif (is_int($value)) {
+                            $_SESSION['err'] = "数値で入力してください。";
                         } else {
-                            $_SESSION['err'] = "在庫が足りません。";
+                            //作った配列をもとにさらに物品ごとのidとusedを絞り込む
+                            //idをもとにstockを取得
+                            foreach ($data[$i] as $id => $used) {
+
+
+                                //stockをidから検索
+                                $pdo = $this->dbConnect();
+                                $sql = "SELECT stock FROM materials WHERE id = :id;";
+                                $stmt = $pdo->prepare($sql);
+                                $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+                                $stmt->execute();
+                                //stock 取得
+                                $stock = $stmt->fetch();
+                                $stmt = null;
+
+                                //在庫の確認
+                                if ($stock['stock'] - $used >= 0) {
+
+                                    //取得した情報でstockをアップデート
+                                    $sql = "UPDATE materials SET stock = :stock - :used WHERE id = :id;";
+                                    $stmt = $pdo->prepare($sql);
+                                    $stmt->bindParam(':used', $used, PDO::PARAM_INT);
+                                    $stmt->bindParam(':stock', $stock['stock'], PDO::PARAM_INT);
+                                    $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+                                    $stmt->execute();
+                                    $stmt = null;
+                                    $pdo = null;
+
+                                    //取消用のセッション
+                                    // $_SESSION['previous_stock'] = $stock;
+                                    // $_SESSION['previous_id'] = $id;
+                                } else {
+                                    $_SESSION['err'] =  "の在庫が足りません。";
+                                }
+                            }
                         }
-                    } else {
-                        $_SESSION['err'] = "入力されていない項目があります。";
                     }
                 }
             }
@@ -281,10 +305,6 @@ class Material
              * postがあるか
              */
             if (array_key_exists('replenish', $_POST)) {
-                $replenish = $_POST['replenish'];
-                $id = $_POST['id'];
-                $stock = $_POST['stock'];
-
                 /**
                  * 二重送信禁止
                  */
@@ -292,24 +312,55 @@ class Material
                 $session_token = isset($_SESSION['token']) ? $_SESSION['token'] : "";
                 unset($_SESSION['token']);
 
-
                 if ($token  != "" && $token == $session_token) {
-                    $pdo = $this->dbConnect();
-                    $sql = "UPDATE materials SET stock = :stock + :replenish WHERE id = :id;";
-                    $stmt = $pdo->prepare($sql);
-                    $stmt->bindParam(':replenish', $replenish, PDO::PARAM_INT);
-                    $stmt->bindParam(':stock', $stock, PDO::PARAM_INT);
-                    $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-                    $stmt->execute();
-                    $stmt = null;
-                    $pdo = null;
+                    //POSTを繰り返し分で取り出して配列でdata[]に格納する。
+                    for ($i = 0; $i < count($_POST['id']); $i++) {
+                        $key = isset($_POST['id'][$i]) ? $_POST['id'][$i] : "";
+                        $value = isset($_POST['replenish'][$i]) ? $_POST['replenish'][$i] : "";
 
-                    $_SESSION['previous_stock'] = $stock;
-                    $_SESSION['previous_id'] = $id;
+                        $data = [$key => $value];
+
+
+                        if ($value == "") {
+                            $_SESSION['err'] = "入力されていない項目があります。";
+                        } elseif (is_int($value)) {
+                            $_SESSION['err'] = "数値で入力してください";
+                        } else {
+                            foreach ($data as $id => $replenish) {
+                                $pdo = $this->dbConnect();
+
+
+                                //stock取得
+                                $sql = "SELECT stock FROM materials WHERE id = :id;";
+                                $stmt = $pdo->prepare($sql);
+                                $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+                                $stmt->execute();
+                                $stock =  $stmt->fetch();
+                                $stmt = null;
+
+                                $sql = "UPDATE materials SET stock = :stock + :replenish WHERE id = :id;";
+                                $stmt = $pdo->prepare($sql);
+                                $stmt->bindParam(':replenish', $replenish, PDO::PARAM_INT);
+                                $stmt->bindParam(':stock', $stock['stock'], PDO::PARAM_INT);
+                                $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+                                $stmt->execute();
+                                $stmt = null;
+                                $pdo = null;
+
+
+                                //取消し用
+                                unset($_SESSION['previous']);
+
+                                $_SESSION['previous'] = [$id => $stock['stock']];
+
+                                print_r($_SESSION['previous']);
+                            }
+                        }
+                    }
                 }
             }
         }
-        header('Location:../views/replenish.php');
+        // header('Location:../views/replenish.php');
         exit;
     }
 }
