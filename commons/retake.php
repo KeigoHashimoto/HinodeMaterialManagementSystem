@@ -1,8 +1,7 @@
 <!-- 取り消しボタン -->
 <?php
 if (isset($_SESSION['previous'])) {
-    print_r($_SESSION);
-    echo "hello";
+
 ?>
     <div class="back-btn">
         <!-- <form action="../functions/Retake.php" method="POST">

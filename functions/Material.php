@@ -293,6 +293,8 @@ class Material
     {
         session_start();
 
+
+
         /**
          * csrf対策
          */
@@ -323,8 +325,6 @@ class Material
 
                         if ($value == "") {
                             $_SESSION['err'] = "入力されていない項目があります。";
-                        } elseif (is_int($value)) {
-                            $_SESSION['err'] = "数値で入力してください";
                         } else {
                             foreach ($data as $id => $replenish) {
                                 $pdo = $this->dbConnect();
@@ -348,8 +348,6 @@ class Material
                                 $pdo = null;
 
 
-                                //取消し用
-                                unset($_SESSION['previous']);
 
                                 $_SESSION['previous'] = [$id => $stock['stock']];
 
@@ -360,7 +358,7 @@ class Material
                 }
             }
         }
-        // header('Location:../views/replenish.php');
+        header('Location:../views/replenish.php');
         exit;
     }
 }
