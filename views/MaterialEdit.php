@@ -68,6 +68,8 @@ $material = $edit->edit($id);
         </main>
     </di>
 
+    <?php include "../commons/js.php" ?>
+
 </body>
 
 </html>

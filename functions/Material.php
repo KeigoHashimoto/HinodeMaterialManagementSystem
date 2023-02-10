@@ -7,9 +7,11 @@ class Material
 
     public function index()
     {
-        $sql = "SELECT * FROM materials;";
+        $sql = "SELECT * FROM materials WHERE userId = :userId ORDER BY stock;";
         $pdo = $this->dbConnect();
-        $stmt = $pdo->query($sql);
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(':userId', $_SESSION['userId']);
+        $stmt->execute();
         $records = $stmt->fetchAll();
         $stmt = null;
         $pdo = null;
@@ -37,6 +39,7 @@ class Material
                 $materialName = $_POST['material_name'];
                 $place = $_POST['place'];
                 $stock = $_POST['stock'];
+                $userId = $_POST['userId'];
 
                 /**
                  * 二重送信禁止
@@ -72,8 +75,9 @@ class Material
                         exit;
                     } else {
                         $pdo = $this->dbConnect();
-                        $sql = "INSERT INTO materials(material_name,place,stock) VALUE(:material_name,:place,:stock);";
+                        $sql = "INSERT INTO materials(userId,material_name,place,stock) VALUE(:userId,:material_name,:place,:stock);";
                         $stmt = $pdo->prepare($sql);
+                        $stmt->bindParam(':userId', $userId, PDO::PARAM_STR);
                         $stmt->bindParam(':material_name', $materialName, PDO::PARAM_STR);
                         $stmt->bindParam(':place', $place, PDO::PARAM_STR);
                         $stmt->bindParam(':stock', $stock, PDO::PARAM_INT);
@@ -207,6 +211,8 @@ class Material
     {
         session_start();
 
+        $previous = array();
+
         /**
          * csrf対策
          */
@@ -260,6 +266,10 @@ class Material
                                 $stock = $stmt->fetch();
                                 $stmt = null;
 
+                                //取消用のセッション
+                                $previous += [$id => $stock['stock']];
+
+
                                 //在庫の確認
                                 if ($stock['stock'] - $used >= 0) {
 
@@ -272,10 +282,6 @@ class Material
                                     $stmt->execute();
                                     $stmt = null;
                                     $pdo = null;
-
-                                    //取消用のセッション
-                                    // $_SESSION['previous_stock'] = $stock;
-                                    // $_SESSION['previous_id'] = $id;
                                 } else {
                                     $_SESSION['err'] =  "の在庫が足りません。";
                                 }
@@ -285,7 +291,7 @@ class Material
                 }
             }
         }
-
+        $_SESSION['previous'] = $previous;
         header('Location:../views/use.php');
     }
 

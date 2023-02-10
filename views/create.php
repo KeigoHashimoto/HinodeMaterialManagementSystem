@@ -26,6 +26,7 @@ $_SESSION['token'] = $token;
         <form action="../functions/Post.php" method="POST">
             <input type="hidden" name="token" value=<?php echo $token ?>>
             <input type="hidden" name="csrf" value=<?php echo htmlspecialchars($csrf, ENT_QUOTES, 'UTF-8') ?>>
+            <input type="hidden" name="userId" value=<?php echo $_SESSION['userId'] ?>>
             <div class="form-group">
                 <label for="material_name">物品名</label>
                 <input type="text" name="material_name">

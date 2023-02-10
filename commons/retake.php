@@ -4,7 +4,7 @@ if (isset($_SESSION['previous'])) {
     $previous = $_SESSION['previous'];
     unset($_SESSION['previous']);
 ?>
-    <div class="back-btn">
+    <div class="back-btn" id="back-btn">
         <?php
 
         if (isset($previous)) { ?>
@@ -22,8 +22,6 @@ if (isset($_SESSION['previous'])) {
 
                 <p>操作を取り消しますか？</p>
                 <input type="submit" name="submit" value="取り消す">
-                <input type="submit" value="取り消さない">
-
             </form>
         <?php } ?>
     </div>

@@ -1,9 +1,15 @@
 <?php
 require_once "../functions/Material.php";
+require_once "../functions/Search.php";
 session_start();
 
-$select = new Material();
-$index = $select->index();
+if (array_key_exists('keyword', $_GET)) {
+    $select = new Search;
+    $index = $select->Search();
+} else {
+    $select = new Material();
+    $index = $select->index();
+}
 
 $csrf = bin2hex(random_bytes(32));
 $_SESSION['csrf'] = $csrf;
@@ -25,9 +31,10 @@ $type = "use";
         <div class="container use">
             <h2>物品を使う</h2>
 
+            <?php include "../commons/Search.php" ?>
+
             <!-- 取り消しボタン -->
-            <?php //include "../commons/retake.php" 
-            ?>
+            <?php include "../commons/retake.php" ?>
 
             <!-- error -->
             <?php
@@ -61,16 +68,22 @@ $type = "use";
                             <small>最終持ち出し日時 :
                                 <?php echo date('Y/m/d', strtotime($record['updated_at'])) ?>
                             </small>
+                            <small>保管場所 :
+                                <?php echo $record['place'] ?>
+                            </small>
                         </div>
                     <?php } ?>
 
                 <?php } ?>
-                <button type="submit" value="submit" class="submit-btn">USE</button>
+                <input type="submit" value="submit" class="submit-btn">
             </form>
 
 
         </div>
     </main>
+
+    <?php include "../commons/js.php" ?>
+
 </body>
 
 </html>
