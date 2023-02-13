@@ -1,1 +1,11 @@
-/*# sourceMappingURL=desktop.css.map */
+@media screen and (min-width: 1025px) {
+  /*______________________________
+  header
+  ______________________________*/
+  .header-nav {
+    font-size: 2vw;
+  }
+  table {
+    font-size: 1.6vw;
+  }
+}/*# sourceMappingURL=desktop.css.map */

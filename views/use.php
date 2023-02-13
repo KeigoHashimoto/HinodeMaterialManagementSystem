@@ -1,6 +1,8 @@
 <?php
 require_once "../functions/Material.php";
 require_once "../functions/Search.php";
+require_once "../functions/Remember.php";
+require_once "../commons/rememberAuth.php";
 session_start();
 
 if (array_key_exists('keyword', $_GET)) {
@@ -28,7 +30,7 @@ $type = "use";
     <?php include "../commons/header.php" ?>
 
     <main>
-        <div class="container use">
+        <div class="use">
             <h2>物品を使う</h2>
 
             <?php include "../commons/Search.php" ?>

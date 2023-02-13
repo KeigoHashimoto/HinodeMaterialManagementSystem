@@ -1,3 +1,54 @@
+@media screen and (min-width: 1025px) {
+  /*______________________________
+  header
+  ______________________________*/
+  header {
+    background: #1f57ff;
+    padding: 4vh 2vw;
+  }
+  header h1 a {
+    font-size: 2vw;
+    font-weight: bold;
+    color: #fff;
+  }
+  header .nav-wrap {
+    display: flex;
+    justify-content: space-between;
+  }
+  header .nav-wrap .header-nav {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 2rem;
+  }
+  header .nav-wrap .header-nav a {
+    display: block;
+    width: -webkit-fit-content;
+    width: -moz-fit-content;
+    width: fit-content;
+    border-right: 1px solid #ccc;
+    padding: 0 1rem;
+  }
+  header .nav-wrap .header-nav a:hover, header .nav-wrap .header-nav .logout:hover {
+    font-size: 1.5vw;
+    transition: font-size 0.25s ease;
+    text-decoration: underline;
+  }
+  header .nav-wrap .header-nav .logout {
+    border: none;
+    background: none;
+    color: #fff;
+  }
+  header .nav-wrap .login-user {
+    color: #ddd;
+    margin-top: 2rem;
+  }
+  header .header-nav a:first-child {
+    border-left: 1px solid #ccc;
+  }
+  table {
+    font-size: 1.6vw;
+  }
+}
 html {
   font-size: 62.5%;
 }
@@ -39,6 +90,8 @@ h2:before {
   position: absolute;
   top: 0;
   left: -1em;
+  border-radius: 10px;
+  transform: rotate(45deg);
 }
 
 h2:after {
@@ -48,7 +101,9 @@ h2:after {
   background: #1f57ff;
   position: absolute;
   top: 0;
-  left: calc(-1em + 15px);
+  left: calc(-1em - 15px);
+  border-radius: 10px;
+  transform: rotate(45deg);
 }
 
 .err {
@@ -100,12 +155,13 @@ header h1 a {
 }
 header .nav-wrap {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
 }
 header .nav-wrap .header-nav {
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-start;
   margin-top: 2rem;
+  font-size: 2.5vw;
 }
 header .nav-wrap .header-nav a {
   display: block;
@@ -115,11 +171,6 @@ header .nav-wrap .header-nav a {
   border-right: 1px solid #ccc;
   padding: 0 1rem;
 }
-header .nav-wrap .header-nav a:hover, header .nav-wrap .header-nav .logout:hover {
-  font-size: 1.5vw;
-  transition: font-size 0.25s ease;
-  text-decoration: underline;
-}
 header .nav-wrap .header-nav .logout {
   border: none;
   background: none;
@@ -128,6 +179,30 @@ header .nav-wrap .header-nav .logout {
 header .nav-wrap .login-user {
   color: #ddd;
   margin-top: 2rem;
+}
+@media screen and (min-width: 1025px) {
+  header .nav-wrap {
+    flex-direction: row;
+  }
+  header .nav-wrap .header-nav {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 2rem;
+    font-size: 1.5vw;
+  }
+  header .nav-wrap .header-nav a {
+    display: block;
+    width: -webkit-fit-content;
+    width: -moz-fit-content;
+    width: fit-content;
+    border-right: 1px solid #ccc;
+    padding: 0 1rem;
+  }
+  header .nav-wrap .header-nav .logout {
+    border: none;
+    background: none;
+    color: #fff;
+  }
 }
 header .header-nav a:first-child {
   border-left: 1px solid #ccc;
@@ -176,8 +251,8 @@ table .table-name {
 table .table-place {
   width: 30%;
 }
-table .table-stock, table .table-edit {
-  width: 15%;
+table .table-stock, table .table-edit, table .table-delete {
+  width: 10%;
   text-align: center;
 }
 table .table-stock-danger {
@@ -185,10 +260,24 @@ table .table-stock-danger {
   text-align: center;
   background: #e86879;
 }
+table .fa-pen {
+  color: #28edd3;
+}
+table .fa-pen:hover {
+  color: #28edd3;
+  filter: brightness(90%);
+}
+table .fa-trash-alt {
+  color: #e86879;
+}
+table .fa-trash-alt:hover {
+  color: #e86879;
+  filter: brightness(90%);
+}
 
 @media screen and (min-width: 1025px) {
   table {
-    font-size: 1.6vw;
+    font-size: 1.5vw;
   }
 }
 /*______________________________
@@ -218,8 +307,9 @@ ______________________________*/
 use
 ______________________________*/
 .use {
-  width: 70%;
+  width: 80%;
   margin: 0 auto;
+  font-size: 3vw;
 }
 .use form {
   margin: 2rem auto;
@@ -249,6 +339,11 @@ ______________________________*/
   padding: 1rem 0;
 }
 
+@media screen and (min-width: 1025px) {
+  .use {
+    font-size: 1.6vw;
+  }
+}
 .back-btn {
   position: fixed;
   bottom: 10%;
@@ -346,6 +441,9 @@ ______________________________*/
   border-radius: 5px;
 }
 
+/*______________________________
+login logout
+______________________________*/
 .input-form {
   max-width: 800px;
   width: 60vw;
@@ -353,6 +451,7 @@ ______________________________*/
   border: 2px solid #1f57ff;
   margin: 3rem auto 5rem;
   padding: 3rem;
+  font-size: 3vw;
 }
 .input-form .form-group {
   display: flex;
@@ -370,4 +469,10 @@ ______________________________*/
   display: block;
   text-align: center;
   font-size: 1.3rem;
+}
+
+@media screen and (min-width: 1025px) {
+  .input-form {
+    font-size: 1.6vw;
+  }
 }/*# sourceMappingURL=style.css.map */

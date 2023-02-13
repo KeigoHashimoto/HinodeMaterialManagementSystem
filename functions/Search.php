@@ -8,7 +8,7 @@ class Search
     function Search()
     {
         $keyword = $_GET['keyword'];
-        $userId = $_SESSION['userId'];
+        $userId = $_SESSION['user_id'];
 
         $pdo = $this->dbConnect();
 
@@ -30,6 +30,7 @@ class Search
 
         $stmt = null;
         $pdo = null;
+
 
         return $records;
     }

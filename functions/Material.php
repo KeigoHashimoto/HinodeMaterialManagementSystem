@@ -1,16 +1,23 @@
 <?php
 require_once "Connect.php";
 
+/**
+ * 物品管理
+ */
+
 class Material
 {
     use Connect;
 
+    /**
+     * 物品の一覧を取得
+     */
     public function index()
     {
         $sql = "SELECT * FROM materials WHERE userId = :userId ORDER BY stock;";
         $pdo = $this->dbConnect();
         $stmt = $pdo->prepare($sql);
-        $stmt->bindParam(':userId', $_SESSION['userId']);
+        $stmt->bindParam(':userId', $_SESSION['user_id']);
         $stmt->execute();
         $records = $stmt->fetchAll();
         $stmt = null;
@@ -19,6 +26,9 @@ class Material
         return $records;
     }
 
+    /**
+     * 物品データの登録
+     */
     public function post()
     {
         session_start();
@@ -95,6 +105,10 @@ class Material
         }
     }
 
+    /**
+     * 物品データの編集
+     * 編集したいデータを取得
+     */
     public function edit($id)
     {
         // idで編集したい項目を検索
@@ -112,6 +126,9 @@ class Material
         return $record;
     }
 
+    /**
+     * 物品データのアップデート
+     */
     public function update()
     {
         session_start();
@@ -184,8 +201,6 @@ class Material
                         $_SESSION['err'] = '入力されていない項目があります';
                         header('Location:../views/MaterialEdit.php');
                         exit;
-                        header('Location:../views/MaterialEdit.php');
-                        exit;
                     } else {
                         $pdo = $this->dbConnect();
                         $sql = "UPDATE materials SET material_name = :material_name,place = :place , stock = :stock WHERE id = :id;";
@@ -207,6 +222,9 @@ class Material
         }
     }
 
+    /**
+     * 物品を使用する
+     */
     function used()
     {
         session_start();
@@ -250,6 +268,8 @@ class Material
                             $_SESSION['err'] = "使用数が入力されていない項目があります。";
                         } elseif (is_int($value)) {
                             $_SESSION['err'] = "数値で入力してください。";
+                        } elseif ($value <= 0) {
+                            $_SESSION['err'] = "0以下の数値は入力できません";
                         } else {
                             //作った配列をもとにさらに物品ごとのidとusedを絞り込む
                             //idをもとにstockを取得
@@ -282,6 +302,8 @@ class Material
                                     $stmt->execute();
                                     $stmt = null;
                                     $pdo = null;
+
+                                    $_SESSION['previous'] = $previous;
                                 } else {
                                     $_SESSION['err'] =  "の在庫が足りません。";
                                 }
@@ -291,10 +313,13 @@ class Material
                 }
             }
         }
-        $_SESSION['previous'] = $previous;
+
         header('Location:../views/use.php');
     }
 
+    /**
+     * 物品を補充する
+     */
     function replenish()
     {
         session_start();
@@ -331,6 +356,8 @@ class Material
 
                         if ($value == "") {
                             $_SESSION['err'] = "入力されていない項目があります。";
+                        } elseif ($value <= 0) {
+                            $_SESSION['err'] = "0以下の数値は入力できません。";
                         } else {
                             foreach ($data as $id => $replenish) {
                                 $pdo = $this->dbConnect();
@@ -355,15 +382,28 @@ class Material
 
                                 $previous += [$id => $stock['stock']];
 
-                                print_r($_SESSION['previous']);
+                                $_SESSION['previous'] = $previous;
                             }
                         }
                     }
                 }
             }
         }
-        $_SESSION['previous'] = $previous;
         header('Location:../views/replenish.php');
         exit;
+    }
+
+    function destroy()
+    {
+        $id = $_GET['delete_id'];
+
+        $pdo = $this->dbConnect();
+        $sql = "DELETE FROM materials WHERE id = :id;";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(':id', $id, PDO::PARAM_STR);
+        $stmt->execute();
+
+        $stmt = null;
+        $pso = null;
     }
 }

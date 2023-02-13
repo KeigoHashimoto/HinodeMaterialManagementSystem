@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * データベース接続
+ */
+
 trait Connect
 {
     public $user = "root";

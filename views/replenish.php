@@ -1,6 +1,8 @@
 <?php
 require_once "../functions/Material.php";
 require_once "../functions/Search.php";
+require_once "../functions/Remember.php";
+require_once "../commons/rememberAuth.php";
 session_start();
 
 /**
@@ -74,6 +76,9 @@ $type = "replenish";
 
                         <small>最終補充日時 :
                             <?php echo date('Y/m/d', strtotime($record['updated_at'])) ?>
+                        </small>
+                        <small>保管場所 :
+                            <?php echo $record['place'] ?>
                         </small>
                     </div>
                 <?php } ?>

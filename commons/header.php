@@ -7,7 +7,7 @@
         </div>
 
         <?php
-        if (isset($_SESSION['userId'])) { ?>
+        if (isset($_SESSION['user_id'])) { ?>
 
             <div class="nav-wrap">
                 <nav class="header-nav">
@@ -16,7 +16,7 @@
                     <a href="use.php">物品を使う</a>
                     <a href="replenish.php">物品を補充する</a>
                     <form action="../functions/Logout.php" method="post">
-                        <input type="submit" value="ログアウト" name="logout" class="logout">
+                        <input id="logout" type="submit" value="ログアウト" name="logout" class="logout">
                     </form>
                 </nav>
                 <div class="login-user">

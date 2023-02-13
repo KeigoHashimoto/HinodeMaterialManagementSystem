@@ -1,5 +1,8 @@
 <?php
 require_once "../functions/Material.php";
+require_once "../functions/Remember.php";
+require_once "../commons/rememberAuth.php";
+
 session_start();
 
 $csrf = bin2hex(random_bytes(32));
