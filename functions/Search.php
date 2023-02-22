@@ -34,4 +34,23 @@ class Search
 
         return $records;
     }
+
+    function not()
+    {
+        $not = $_GET['not'];
+        $userId = $_SESSION['user_id'];
+
+        $pdo = $this->dbConnect();
+
+        $sql = "SELECT * FROM materials WHERE stock = :not;";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindValue(':not', 0, PDO::PARAM_INT);
+        $stmt->execute();
+        $records = $stmt->fetchAll();
+
+        $stmt = null;
+        $pdo = null;
+
+        return $records;
+    }
 }

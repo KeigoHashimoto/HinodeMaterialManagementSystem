@@ -1,4 +1,5 @@
 <header>
+    <?php print_r($_SESSION); ?>
     <div class="container">
         <div class="logo">
             <h1>

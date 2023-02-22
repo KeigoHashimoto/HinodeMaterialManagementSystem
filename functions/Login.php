@@ -18,7 +18,6 @@ class Login
             $userId = $_POST['userId'];
             $pass = $_POST['password'];
 
-
             $pdo = $this->dbConnect();
             $sql = "SELECT * FROM users WHERE userId = :userId";
             $stmt = $pdo->prepare($sql);

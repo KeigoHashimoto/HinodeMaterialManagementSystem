@@ -49,36 +49,38 @@ $type = "use";
                 unset($_SESSION['err']);
             } ?>
 
-            <form action="../functions/Use.php" method="post">
-                <input type="hidden" name="csrf" value=<?php echo $csrf ?>>
-                <input type="hidden" name="token" value=<?php echo $token ?>>
+            <div class="form">
+                <form action=" ../functions/Use.php" method="post">
+                    <input type="hidden" name="csrf" value=<?php echo $csrf ?>>
+                    <input type="hidden" name="token" value=<?php echo $token ?>>
 
-                <?php foreach ($index as $record) { ?>
+                    <?php foreach ($index as $record) { ?>
 
-                    <?php
-                    if ($record['stock'] > 0) { ?>
-                        <div class="wrap">
-                            <input type="hidden" name="id[]" value=<?php echo $record['id'] ?>>
-                            <input type="hidden" name="stock[]" value=<?php echo $record['stock'] ?>>
-                            <input type="hidden" name="material_name[]" value=<?php echo $record['material_name'] ?>>
-                            <div class="form-group">
-                                <p><?php echo $record['material_name'] ?> |</p>
-                                <p>在庫：<?php echo $record['stock'] ?></p>
-                                <p>持ち出し数： <input type="number" name="use[]" value="0"></p>
+                        <?php
+                        if ($record['stock'] > 0) { ?>
+                            <div class="wrap">
+                                <input type="hidden" name="id[]" value=<?php echo $record['id'] ?>>
+                                <input type="hidden" name="stock[]" value=<?php echo $record['stock'] ?>>
+                                <input type="hidden" name="material_name[]" value=<?php echo $record['material_name'] ?>>
+                                <div class="form-group">
+                                    <p><?php echo $record['material_name'] ?> |</p>
+                                    <p>在庫：<?php echo $record['stock'] ?></p>
+                                    <p>持ち出し数： <input type="number" name="use[]" value="0"></p>
+                                </div>
+
+                                <small>最終持ち出し日時 :
+                                    <?php echo date('Y/m/d', strtotime($record['updated_at'])) ?>
+                                </small>
+                                <small>保管場所 :
+                                    <?php echo $record['place'] ?>
+                                </small>
                             </div>
+                        <?php } ?>
 
-                            <small>最終持ち出し日時 :
-                                <?php echo date('Y/m/d', strtotime($record['updated_at'])) ?>
-                            </small>
-                            <small>保管場所 :
-                                <?php echo $record['place'] ?>
-                            </small>
-                        </div>
                     <?php } ?>
-
-                <?php } ?>
-                <input type="submit" value="submit" class="submit-btn">
-            </form>
+                    <input type="submit" value="submit" class="submit-btn">
+                </form>
+            </div>
 
 
         </div>

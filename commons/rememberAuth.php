@@ -8,4 +8,5 @@ if (!isset($_SESSION['user_id']) && !isset($_COOKIE['remember_token'])) {
     $remember = new Remember();
     $user = $remember->remember_user($_COOKIE['remember_token']);
     $_SESSION['user_id'] = $user['userId'];
+    $_SESSION['name'] = $user['name'];
 }

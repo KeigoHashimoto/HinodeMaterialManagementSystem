@@ -62,6 +62,17 @@ class Material
                  * validation
                  */
                 if ($token != "" && $token == $session_token) {
+                    if (mb_strlen($materialName) > 50) {
+                        $_SESSION['err'] = '50文字以内で入力してください';
+                        header('Location:../views/create.php');
+                        exit;
+                    }
+                    if (mb_strlen($place) > 50) {
+                        $_SESSION['err'] = '50文字以内で入力してください';
+                        header('Location:../views/create.php');
+                        exit;
+                    }
+
                     if (empty($materialName) && !empty($place) && !empty($stock)) {
                         $_SESSION['err'] = '物品名を入力してください';
                         header("Location:../views/create.php");
@@ -85,11 +96,12 @@ class Material
                         exit;
                     } else {
                         $pdo = $this->dbConnect();
-                        $sql = "INSERT INTO materials(userId,material_name,place,stock) VALUE(:userId,:material_name,:place,:stock);";
+                        $sql = "INSERT INTO materials(userId,material_name,place,need,stock) VALUE(:userId,:material_name,:place,:need,:stock);";
                         $stmt = $pdo->prepare($sql);
                         $stmt->bindParam(':userId', $userId, PDO::PARAM_STR);
                         $stmt->bindParam(':material_name', $materialName, PDO::PARAM_STR);
                         $stmt->bindParam(':place', $place, PDO::PARAM_STR);
+                        $stmt->bindParam(':need', $stock, PDO::PARAM_STR);
                         $stmt->bindParam(':stock', $stock, PDO::PARAM_INT);
                         $stmt->execute();
 
@@ -268,7 +280,7 @@ class Material
                             $_SESSION['err'] = "使用数が入力されていない項目があります。";
                         } elseif (is_int($value)) {
                             $_SESSION['err'] = "数値で入力してください。";
-                        } elseif ($value <= 0) {
+                        } elseif ($value < 0) {
                             $_SESSION['err'] = "0以下の数値は入力できません";
                         } else {
                             //作った配列をもとにさらに物品ごとのidとusedを絞り込む
@@ -356,7 +368,7 @@ class Material
 
                         if ($value == "") {
                             $_SESSION['err'] = "入力されていない項目があります。";
-                        } elseif ($value <= 0) {
+                        } elseif ($value < 0) {
                             $_SESSION['err'] = "0以下の数値は入力できません。";
                         } else {
                             foreach ($data as $id => $replenish) {

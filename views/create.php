@@ -40,7 +40,7 @@ $_SESSION['token'] = $token;
                     <input type="text" name="place">
                 </div>
                 <div class="form-group">
-                    <label for="stock">初期在庫数</label>
+                    <label for="stock">必要な数</label>
                     <input type="number" name="stock">
                 </div>
 

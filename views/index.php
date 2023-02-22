@@ -22,8 +22,6 @@ if (isset($_GET['word'])) {
 }
 
 
-
-
 ?>
 
 <?php include "../commons/doctype.php" ?>
@@ -63,6 +61,9 @@ if (isset($_GET['word'])) {
                             <input type="submit" value="在庫" class="sort">
                         </form>
                     </th>
+                    <th>
+                        必要数
+                    </th>
                     <th></th>
                     <th></th>
                 </tr>
@@ -78,6 +79,7 @@ if (isset($_GET['word'])) {
                         <?php } else { ?>
                             <td class="table-stock"><?php echo $record['stock'] ?></td>
                         <?php } ?>
+                        <td class="table-need"><?php echo $record['need'] ?></td>
                         <td class="table-edit"><a href="MaterialEdit.php?id=<?php echo $record['id'] ?>"><i class="fas fa-pen"></i></a></td>
                         <td class="table-delete"><a class="delete" href="index.php?delete_id=<?php echo $record['id'] ?>"><i class="fas fa-trash-alt"></i></a></td>
                     </tr>

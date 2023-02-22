@@ -22,7 +22,6 @@
   }
   header .nav-wrap .header-nav a {
     display: block;
-    width: -webkit-fit-content;
     width: -moz-fit-content;
     width: fit-content;
     border-right: 1px solid #ccc;
@@ -74,7 +73,6 @@ a:visited {
 h2 {
   font-size: 3vw;
   position: relative;
-  width: -webkit-fit-content;
   width: -moz-fit-content;
   width: fit-content;
   margin: 0 auto;
@@ -89,7 +87,7 @@ h2:before {
   background: #28edd3;
   position: absolute;
   top: 0;
-  left: -1em;
+  left: -1.4em;
   border-radius: 10px;
   transform: rotate(45deg);
 }
@@ -101,7 +99,7 @@ h2:after {
   background: #1f57ff;
   position: absolute;
   top: 0;
-  left: calc(-1em - 15px);
+  left: calc(-1.4em - 15px);
   border-radius: 10px;
   transform: rotate(45deg);
 }
@@ -120,7 +118,7 @@ h2:after {
 .submit-btn {
   width: 80%;
   margin: 1rem auto;
-  height: 2em;
+  padding: 0.5rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -165,7 +163,6 @@ header .nav-wrap .header-nav {
 }
 header .nav-wrap .header-nav a {
   display: block;
-  width: -webkit-fit-content;
   width: -moz-fit-content;
   width: fit-content;
   border-right: 1px solid #ccc;
@@ -192,7 +189,6 @@ header .nav-wrap .login-user {
   }
   header .nav-wrap .header-nav a {
     display: block;
-    width: -webkit-fit-content;
     width: -moz-fit-content;
     width: fit-content;
     border-right: 1px solid #ccc;
@@ -232,9 +228,11 @@ table thead th {
   text-align: center;
   font-weight: bold;
   padding: 1rem 0;
+  color: #fff;
 }
 table thead th input {
   color: #fff;
+  text-decoration: underline;
 }
 table td {
   padding: 1rem;
@@ -246,12 +244,13 @@ table td a:visited {
   color: #454545;
 }
 table .table-name {
-  width: 40%;
+  width: 30%;
+  font-weight: bold;
 }
 table .table-place {
   width: 30%;
 }
-table .table-stock, table .table-edit, table .table-delete {
+table .table-stock, table .table-need, table .table-edit, table .table-delete {
   width: 10%;
   text-align: center;
 }
@@ -311,7 +310,7 @@ ______________________________*/
   margin: 0 auto;
   font-size: 3vw;
 }
-.use form {
+.use .form form {
   margin: 2rem auto;
   display: flex;
   flex-direction: column;
@@ -321,22 +320,35 @@ ______________________________*/
   border-radius: 5px;
   padding: 3rem;
 }
-.use form .form-group {
+.use .form form .form-group {
   display: flex;
   align-items: center;
   -moz-column-gap: 2rem;
        column-gap: 2rem;
   height: 2.5rem;
+  margin-bottom: 1rem;
 }
-.use form .form-group input {
+.use .form form .form-group input {
   width: 5rem;
 }
-.use form .wrap {
+.use .form form .wrap {
   border-bottom: 2px dashed #1f57ff;
   margin-bottom: 3rem;
   width: 100%;
   line-height: 1.2;
   padding: 1rem 0;
+}
+.use .not-form {
+  background: none;
+}
+.use .not-form .not {
+  border: none;
+  background: #e86879;
+  border-radius: 5px;
+  color: #fff;
+  cursor: pointer;
+  font-size: 1.3rem;
+  padding: 0.3rem 0.5rem;
 }
 
 @media screen and (min-width: 1025px) {
@@ -344,17 +356,21 @@ ______________________________*/
     font-size: 1.6vw;
   }
 }
+@media screen and (max-width: 450px) {
+  .use {
+    width: 95%;
+    font-size: 1.2vw;
+  }
+}
 .back-btn {
   position: fixed;
   bottom: 10%;
   right: 5%;
   transform: translateX(500%);
-  -webkit-animation: backActive 2s ease forwards;
-          animation: backActive 2s ease forwards;
+  animation: backActive 2s ease forwards;
 }
 .back-btn form {
   background: #e86879;
-  width: -webkit-fit-content;
   width: -moz-fit-content;
   width: fit-content;
   border-radius: 5px;
@@ -364,15 +380,6 @@ ______________________________*/
   justify-content: center;
   align-items: center;
   padding: 2rem 3rem;
-}
-
-@-webkit-keyframes backActive {
-  0% {
-    transform: translateX(500%);
-  }
-  100% {
-    transform: translateX(0);
-  }
 }
 
 @keyframes backActive {
@@ -387,17 +394,7 @@ ______________________________*/
 back-btn
 ______________________________*/
 .back-remove {
-  -webkit-animation: backRemove 5s ease forwards;
-          animation: backRemove 5s ease forwards;
-}
-
-@-webkit-keyframes backRemove {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(500%);
-  }
+  animation: backRemove 5s ease forwards;
 }
 
 @keyframes backRemove {
@@ -411,28 +408,38 @@ ______________________________*/
 /*______________________________
 search
 ______________________________*/
+.search {
+  background: #ccc;
+  border-radius: 5px;
+  width: 80%;
+  padding: 1rem;
+  margin: 2rem auto;
+}
+.search small {
+  display: block;
+  text-align: center;
+  font-size: 1.4rem;
+}
 .search .form-group-search {
   display: flex;
   align-items: center;
   -moz-column-gap: 1rem;
        column-gap: 1rem;
-  width: -webkit-fit-content;
   width: -moz-fit-content;
   width: fit-content;
   padding: 1rem;
-  height: 10rem;
 }
 .search .form-group-search label {
   color: #1f57ff;
+  text-align: center;
 }
-.search .form-group-search .search {
-  width: 30vw;
-  height: 4rem;
+.search .form-group-search .search-input {
+  width: 50vw;
+  height: 1.5em;
   padding: 1rem;
   border-radius: 5px;
 }
 .search .form-group-search .search-btn {
-  width: -webkit-fit-content;
   width: -moz-fit-content;
   width: fit-content;
   background: #1f57ff;
